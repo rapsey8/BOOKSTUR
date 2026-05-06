@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | SSCR-C Bookstore</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+  <style>
+    /* ─── RESET & ROOT ───────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --red:       #dc1717;
+      --dark-red:  #8b0000;
+      --gold:      #ffc107;
+      --white:     #ffffff;
+      --light-bg:  #f8f9fa;
+      --dark-text: #2c3e50;
+      --shadow:    0 4px 20px rgba(0,0,0,.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--light-bg);
+      color: var(--dark-text);
+      font-size: 14px;
+      min-height: 100vh;
+    }
+
+    /* ─── NAVBAR ─────────────────────────────────────────── */
+    .nav {
+      background: linear-gradient(to right, #ffeb3b, #dc1717);
+      height: 68px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    }
+
+    .nav-logo-circle {
+      width: 42px; height: 42px;
+      background: rgba(255,255,255,.25);
+      border: 2px solid rgba(255,255,255,.5);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; color: #fff; font-size: 10px;
+      text-align: center; line-height: 1.2;
+      flex-shrink: 0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,.4);
+    }
+
+    .nav-title {
+      font-size: 14px; font-weight: 800; color: #fff;
+      text-shadow: 1px 1px 4px rgba(0,0,0,.5);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .nav-spacer { flex: 1; }
+
+    .nav-icon {
+      color: #fff;
+      font-size: 26px;
+      cursor: pointer;
+      text-shadow: 1px 1px 3px rgba(0,0,0,.4);
+      transition: transform .2s;
+      text-decoration: none;
+    }
+    .nav-icon:hover { transform: scale(1.15); }
+
+    /* ─── HERO BANNER ────────────────────────────────────── */
+    .hero-banner {
+      background: linear-gradient(135deg, var(--dark-red) 0%, var(--red) 55%, #c8860a 100%);
+      height: 230px;
+      margin-top: 68px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 20px;
+    }
+
+    .hero-pattern {
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,.07) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,193,7,.12) 0%, transparent 40%);
+    }
+
+    .hero-watermark {
+      position: absolute;
+      right: -20px; bottom: -20px;
+      font-size: 140px; font-weight: 900;
+      color: rgba(255,255,255,.05);
+      line-height: 1; user-select: none;
+      white-space: nowrap;
+    }
+
+    .avatar-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      transform: translateY(54px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .avatar-wrap { position: relative; flex-shrink: 0; }
+
+    .avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      background: linear-gradient(135deg, #fff5, #fff);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px; font-weight: 800; color: var(--red);
+      box-shadow: 0 6px 20px rgba(0,0,0,.3);
+      overflow: hidden;
+    }
+
+    .avatar-cam {
+      position: absolute; bottom: 4px; right: 4px;
+      width: 26px; height: 26px;
+      background: var(--gold);
+      border: 2px solid #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    }
+    .avatar-cam .material-icons-outlined { font-size: 13px; color: #333; }
+
+    .hero-info { padding-bottom: 10px; }
+    .hero-name {
+      font-size: 18px; font-weight: 800; color: #fff;
+      text-shadow: 1px 2px 8px rgba(0,0,0,.6);
+      line-height: 1.2;
+    }
+    .hero-meta {
+      font-size: 12px; color: rgba(255,255,255,.85);
+      font-weight: 600; margin-top: 4px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,.4);
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(40,167,69,.25);
+      border: 1px solid rgba(40,167,69,.4);
+      color: #b7ffcb;
+      padding: 2px 8px; border-radius: 20px;
+      font-size: 10px; font-weight: 700;
+    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #4cde7a; }
+
+    /* ─── CONTENT ────────────────────────────────────────── */
+    .content {
+      padding: 70px 16px 40px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 10px; font-weight: 700;
+      color: #aaa; text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 0 8px 4px;
+    }
+
+    /* ─── STATS ROW ──────────────────────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 16px 10px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(220,23,23,.08);
+    }
+
+    .stat-icon { font-size: 26px; margin-bottom: 4px; }
+    .stat-num { font-size: 22px; font-weight: 800; color: var(--dark-text); }
+    .stat-label {
+      font-size: 10px; color: #aaa; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .3px; margin-top: 2px;
+    }
+
+    /* ─── CARDS ──────────────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(220,23,23,.07);
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, rgba(220,23,23,.05), rgba(255,193,7,.05));
+      padding: 12px 18px;
+      border-bottom: 1px solid rgba(220,23,23,.08);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .card-header .material-icons-outlined { font-size: 20px; color: var(--red); }
+    .card-header h3 {
+      font-size: 12px; font-weight: 700;
+      color: var(--dark-text); text-transform: uppercase; letter-spacing: .5px;
+    }
+
+    .card-body { padding: 6px 18px 18px; }
+
+    /* ─── INFO ROWS ──────────────────────────────────────── */
+    .info-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 11px 0;
+      border-bottom: 1px solid #f3f3f3;
+    }
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-row:first-child { padding-top: 14px; }
+
+    .info-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(220,23,23,.07);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .info-icon .material-icons-outlined { font-size: 18px; color: var(--red); }
+
+    .info-label {
+      font-size: 10px; color: #aaa; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .4px;
+    }
+    .info-value { font-size: 14px; color: var(--dark-text); font-weight: 600; margin-top: 1px; }
+
+    /* ─── ACTION LIST ────────────────────────────────────── */
+    .action-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: background .18s;
+      border-bottom: 1px solid #f5f5f5;
+      text-decoration: none;
+      color: inherit;
+    }
+    .action-item:last-child { border-bottom: none; }
+    .action-item:hover { background: #fafafa; }
+    .action-item:active { background: #f0f0f0; }
+
+    .action-icon {
+      width: 40px; height: 40px;
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .action-icon .material-icons-outlined { font-size: 20px; }
+
+    .action-text { flex: 1; }
+    .action-label { font-size: 14px; font-weight: 600; color: var(--dark-text); }
+    .action-sub { font-size: 11px; color: #aaa; margin-top: 1px; }
+
+    .action-arrow { font-size: 20px; color: #ddd; }
+
+    /* ─── SCHOOL CARD ────────────────────────────────────── */
+    .school-banner {
+      background: linear-gradient(135deg, var(--dark-red), var(--red));
+      padding: 20px 18px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .school-icon-wrap {
+      width: 52px; height: 52px;
+      background: rgba(255,255,255,.15);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,.2);
+    }
+    .school-icon-wrap .material-icons-outlined { font-size: 28px; color: #fff; }
+    .school-title { font-weight: 800; font-size: 14px; color: #fff; }
+    .school-sub { font-size: 12px; color: rgba(255,255,255,.75); margin-top: 2px; }
+    .school-motto { font-size: 11px; color: var(--gold); font-weight: 700; margin-top: 5px; }
+
+    /* ─── LOGOUT BUTTON ──────────────────────────────────── */
+    .logout-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--red), #a31111);
+      color: #fff; border: none;
+      padding: 16px;
+      border-radius: 14px;
+      font-size: 15px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 4px 18px rgba(220,23,23,.35);
+      font-family: 'Poppins', sans-serif;
+      transition: all .3s ease;
+      letter-spacing: .3px;
+    }
+    .logout-btn:hover {
+      background: linear-gradient(135deg, #a31111, var(--red));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(220,23,23,.45);
+    }
+    .logout-btn:active { transform: translateY(0); }
+    .logout-btn .material-icons-outlined { font-size: 20px; }
+
+    /* ─── FOOTER NOTE ────────────────────────────────────── */
+    .footer-note {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 11px;
+      color: #bbb;
+      font-weight: 600;
+      line-height: 1.8;
+    }
+
+    /* ─── LOGOUT MODAL ───────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.5);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: none;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.show { display: flex; }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 28px;
+      max-width: 340px; width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+      animation: popIn .25s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(.85); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    .modal-icon {
+      width: 64px; height: 64px;
+      background: rgba(220,23,23,.1);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .modal-icon .material-icons-outlined { font-size: 32px; color: var(--red); }
+    .modal-title { font-size: 18px; font-weight: 800; color: var(--dark-text); margin-bottom: 8px; }
+    .modal-msg { font-size: 13px; color: #888; line-height: 1.6; margin-bottom: 24px; }
+
+    .modal-btns { display: flex; gap: 10px; }
+
+    .btn-cancel-modal {
+      flex: 1; padding: 12px;
+      background: #f3f4f6; border: none;
+      border-radius: 10px; font-size: 14px;
+      font-weight: 700; color: #666;
+      cursor: pointer; font-family: 'Poppins', sans-serif;
+      transition: background .2s;
+    }
+    .btn-cancel-modal:hover { background: #e5e7eb; }
+
+    .btn-confirm-logout {
+      flex: 1; padding: 12px;
+      background: linear-gradient(135deg, var(--red), #a31111);
+      border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 700; color: #fff;
+      cursor: pointer; font-family: 'Poppins', sans-serif;
+      transition: all .2s;
+    }
+    .btn-confirm-logout:hover { opacity: .9; }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 400px) {
+      .nav-title { display: none; }
+      .hero-banner { height: 210px; }
+      .avatar { width: 88px; height: 88px; font-size: 28px; }
+      .hero-name { font-size: 16px; }
+      .stat-num { font-size: 20px; }
+    }
+
+    @media (min-width: 600px) {
+      .content { padding: 80px 24px 60px; }
+      .hero-banner { height: 250px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══════════════════════════════════════════ -->
+  <nav class="nav">
+    <div class="nav-logo-circle">SSCR<br>dC</div>
+    <span class="nav-title">SSCR-C Bookstore</span>
+    <div class="nav-spacer"></div>
+    <a href="#" class="nav-icon material-icons-outlined" title="Books">menu_book</a>
+    <a href="#" class="nav-icon material-icons-outlined" title="Cart">shopping_bag</a>
+  </nav>
+
+  <!-- ══ HERO BANNER ═════════════════════════════════════ -->
+  <div class="hero-banner">
+    <div class="hero-pattern"></div>
+    <div class="hero-watermark">SSCRdC</div>
+    <div class="avatar-row">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarInitials">JD</div>
+        <div class="avatar-cam" title="Change photo">
+          <span class="material-icons-outlined">photo_camera</span>
+        </div>
+      </div>
+      <div class="hero-info">
+        <div class="hero-name" id="heroName">Juan dela Cruz</div>
+        <div class="hero-meta">
+          <span id="heroId">2021-00123</span>
+          <span class="status-pill">
+            <span class="status-dot"></span>Active
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MAIN CONTENT ════════════════════════════════════ -->
+  <div class="content">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">🛒</div>
+        <div class="stat-num">12</div>
+        <div class="stat-label">Orders</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📦</div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Pending</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">✅</div>
+        <div class="stat-num">9</div>
+        <div class="stat-label">Completed</div>
+      </div>
+    </div>
+
+    <!-- PERSONAL INFO -->
+    <div class="section-label">Personal Information</div>
+    <div class="card">
+      <div class="card-header">
+        <span class="material-icons-outlined">person</span>
+        <h3>Account Details</h3>
+      </div>
+      <div class="card-body">
+        <div class="info-row">
+          <div class="info-icon"><span class="material-icons-outlined">badge</span></div>
+          <div>
+            <div class="info-label">Full Name</div>
+            <div class="info-value" id="infoName">Juan dela Cruz</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon"><span class="material-icons-outlined">pin</span></div>
+          <div>
+            <div class="info-label">Student Number</div>
+            <div class="info-value" id="infoStudentNo">2021-00123</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon"><span class="material-icons-outlined">school</span></div>
+          <div>
+            <div class="info-label">Course</div>
+            <div class="info-value" id="infoCourse">BS Information Technology</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon"><span class="material-icons-outlined">shield</span></div>
+          <div>
+            <div class="info-label">Role</div>
+            <div class="info-value" style="color:var(--red); font-weight:700;">Student</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY ACCOUNT LINKS -->
+    <div class="section-label" style="margin-top:16px;">My Account</div>
+    <div class="card">
+      <a href="#" class="action-item">
+        <div class="action-icon" style="background:rgba(220,23,23,.08);">
+          <span class="material-icons-outlined" style="color:var(--red);">receipt_long</span>
+        </div>
+        <div class="action-text">
+          <div class="action-label">Order History</div>
+          <div class="action-sub">View all past transactions</div>
+        </div>
+        <span class="material-icons-outlined action-arrow">chevron_right</span>
+      </a>
+      <a href="#" class="action-item">
+        <div class="action-icon" style="background:rgba(255,193,7,.12);">
+          <span class="material-icons-outlined" style="color:#b8860b;">shopping_cart</span>
+        </div>
+        <div class="action-text">
+          <div class="action-label">My Cart</div>
+          <div class="action-sub">3 items in cart</div>
+        </div>
+        <span class="material-icons-outlined action-arrow">chevron_right</span>
+      </a>
+      <div class="action-item" id="changePasswordBtn" style="cursor:pointer;">
+        <div class="action-icon" style="background:rgba(40,167,69,.1);">
+          <span class="material-icons-outlined" style="color:#1a7a35;">lock_reset</span>
+        </div>
+        <div class="action-text">
+          <div class="action-label">Change Password</div>
+          <div class="action-sub">Update your credentials</div>
+        </div>
+        <span class="material-icons-outlined action-arrow">chevron_right</span>
+      </div>
+    </div>
+
+    <!-- SCHOOL INFO -->
+    <div class="section-label" style="margin-top:16px;">School</div>
+    <div class="card">
+      <div class="school-banner">
+        <div class="school-icon-wrap">
+          <span class="material-icons-outlined">account_balance</span>
+        </div>
+        <div>
+          <div class="school-title">San Sebastian College</div>
+          <div class="school-sub">Recoletos de Cavite</div>
+          <div class="school-motto">Caritas et Scientia</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="info-row" style="padding-top:14px;">
+          <div class="info-icon"><span class="material-icons-outlined">phone</span></div>
+          <div>
+            <div class="info-label">Contact</div>
+            <div class="info-value">(046) 431-7011</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon"><span class="material-icons-outlined">mail</span></div>
+          <div>
+            <div class="info-label">Email</div>
+            <div class="info-value">bookstore@ssrcavite.edu.ph</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon"><span class="material-icons-outlined">schedule</span></div>
+          <div>
+            <div class="info-label">Store Hours</div>
+            <div class="info-value">Mon – Fri &nbsp;|&nbsp; 8:00 AM – 5:00 PM</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon"><span class="material-icons-outlined">weekend</span></div>
+          <div>
+            <div class="info-label">Saturday</div>
+            <div class="info-value">8:00 AM – 12:00 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGOUT -->
+    <button class="logout-btn" id="logoutBtn">
+      <span class="material-icons-outlined">logout</span>
+      Logout
+    </button>
+
+    <div class="footer-note">
+      &copy; 2026 San Sebastian College - Recoletos de Cavite<br>
+      BOOKSTUR &nbsp;|&nbsp; All Rights Reserved
+    </div>
+
+  </div><!-- end .content -->
+
+  <!-- ══ LOGOUT MODAL ════════════════════════════════════ -->
+  <div class="modal-overlay" id="logoutModal">
+    <div class="modal-box">
+      <div class="modal-icon">
+        <span class="material-icons-outlined">logout</span>
+      </div>
+      <div class="modal-title">Leaving so soon?</div>
+      <div class="modal-msg">Are you sure you want to log out of your SSCR-C Bookstore account?</div>
+      <div class="modal-btns">
+        <button class="btn-cancel-modal" id="cancelLogout">Stay</button>
+        <button class="btn-confirm-logout" id="confirmLogout">Yes, Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCRIPTS ══════════════════════════════════════════ -->
+  <script>
+    /* ── Generate initials from name ── */
+    function getInitials(name) {
+      return name.trim().split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(w => w[0].toUpperCase())
+        .join('');
+    }
+
+    /* ── Set avatar initials on load ── */
+    const nameEl = document.getElementById('heroName');
+    document.getElementById('avatarInitials').textContent = getInitials(nameEl.textContent);
+
+    /* ── Logout modal ── */
+    const logoutBtn    = document.getElementById('logoutBtn');
+    const logoutModal  = document.getElementById('logoutModal');
+    const cancelLogout = document.getElementById('cancelLogout');
+    const confirmLogout = document.getElementById('confirmLogout');
+
+    logoutBtn.addEventListener('click', () => {
+      logoutModal.classList.add('show');
+    });
+
+    cancelLogout.addEventListener('click', () => {
+      logoutModal.classList.remove('show');
+    });
+
+    logoutModal.addEventListener('click', (e) => {
+      if (e.target === logoutModal) logoutModal.classList.remove('show');
+    });
+
+    confirmLogout.addEventListener('click', () => {
+      /* Replace with actual logout URL when converting to PHP */
+      alert('Logging out... (wire to /BOOKSTUR/component/adminUtils/logout.php)');
+      logoutModal.classList.remove('show');
+    });
+
+    /* ── Change Password placeholder ── */
+    document.getElementById('changePasswordBtn').addEventListener('click', () => {
+      alert('Change Password modal — wire up SweetAlert2 input here.');
+    });
+
+    /* ── Navbar scroll effect ── */
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('.nav');
+      if (window.scrollY > 10) {
+        nav.style.boxShadow = '0 4px 16px rgba(0,0,0,.35)';
+      } else {
+        nav.style.boxShadow = '0 2px 10px rgba(0,0,0,.25)';
+      }
+    });
+  </script>
+
+</body>
+</html>
